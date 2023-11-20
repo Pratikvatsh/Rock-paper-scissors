@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// A function to generate a random number between 0 and 2
+int random_number() {
+    return rand() % 3;
+}
+
+// A function to compare the choices of the player and the computer
+// and return the result
+// 0 means a tie, 1 means the player wins, 2 means the computer wins
+int compare_choices(int player, int computer) {
+    if (player == computer) {
+        return 0;
+    } else if (player == 0 && computer == 1) {
+        return 2;
+    } else if (player == 0 && computer == 2) {
+        return 1;
+    } else if (player == 1 && computer == 0) {
+        return 1;
+    } else if (player == 1 && computer == 2) {
+        return 2;
+    } else if (player == 2 && computer == 0) {
+        return 2;
+    } else if (player == 2 && computer == 1) {
+        return 1;
+    }
+    return -1; // Added for clarity (shouldn't reach this point)
+}
+
+// A function to convert the numeric choice to a string
+const char* choice_to_string(int choice) {
+    if (choice == 0) {
+        return "Stone";
+    } else if (choice == 1) {
+        return "Paper";
+    } else if (choice == 2) {
+        return "Scissors";
+    }
+    return "Invalid Choice"; // Added for handling unexpected values
+}
+
+int main() {
+    // Initialize the random seed
+    srand(time(NULL));
+
+    // Declare the variables
+    int player, computer, result;
+
+    // Print the instructions
+    printf("Welcome to the stone, paper, scissors game!\n");
+    printf("Enter 0 for Stone, 1 for Paper, or 2 for Scissors.\n");
+
+    // Loop for 3 rounds
+    for (int i = 0; i < 3; i++) {
+        // Ask the player to enter their choice
+        printf("Round %d: Enter your choice: ", i + 1);
+        scanf("%d", &player);
+
+        // Validate the player's input
+        if (player < 0 || player > 2) {
+            printf("Invalid choice. Please enter 0 for Stone, 1 for Paper, or 2 for Scissors.\n");
+            i--; // Decrement the round counter to ask for the choice again
+            continue;
+        }
+
+        // Generate the computer's choice
+        computer = random_number();
+
+        // Compare the choices and get the result
+        result = compare_choices(player, computer);
+
+        // Print the choices and the result
+        printf("You chose %s, the computer chose %s.\n", choice_to_string(player), choice_to_string(computer));
+        if (result == 0) {
+            printf("It's a tie!\n");
+        } else if (result == 1) {
+            printf("You win!\n");
+        } else if (result == 2) {
+            printf("You lose!\n");
+        }
+    }
+
+    // End the program
+    printf("Thank you for playing!\n");
+    return 0;
+}
